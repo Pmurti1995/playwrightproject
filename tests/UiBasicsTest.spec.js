@@ -1,6 +1,6 @@
 const { test, expect } = require("@playwright/test");
 
-test.only("Browser context Playwright Test", async ({ browser }) => {
+test("Browser context Playwright Test", async ({ browser }) => {
   //playwright code
   const context = await browser.newContext();
   const page = await context.newPage();
@@ -25,8 +25,19 @@ test.only("Browser context Playwright Test", async ({ browser }) => {
   console.log(allTitles);
 });
 
-test("page Playwright Test", async ({ page }) => {
-  await page.goto("https://www.google.com/");
-  console.log(await page.title());
-  await expect(page).toHaveTitle("Google");
+test.only("UI Controls", async ({ page }) => {
+  await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
+  const userName = page.locator("input#username");
+  const signIn = page.locator("#signInBtn");
+  await userName.fill("rahulshettyacademy");
+  const dropdown = page.locator("select.form-control");
+  await dropdown.selectOption("consult");
+  await page.locator(".checkmark").last().click();
+  await page.locator("#okayBtn").click();
+  console.log(await page.locator(".checkmark").last().isChecked());
+  await expect(page.locator(".checkmark").last()).toBeChecked();
+  await page.locator("#terms").click();
+  await expect(page.locator("#terms")).toBeChecked();
+  await page.locator("#terms").uncheck();
+  //await page.pause();
 });
